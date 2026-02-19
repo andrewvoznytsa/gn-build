@@ -258,7 +258,7 @@ config("compiler") {
 
     # Let clang find the linker in the NDK.
     ldflags += [ "--gcc-toolchain=$_rebased_android_toolchain_root", "-resource-dir=$_rebased_android_toolchain_resource_dir" ]
-  } else if (gcc_toolchain == "" && use_sysroot && is_clang) {
+  } else if (gcc_toolchain == "" && use_sysroot && is_clang && !is_mac) {
     _rebased_toolchain_root =
         rebase_path(sysroot, root_build_dir)
 

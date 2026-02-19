@@ -11,6 +11,7 @@ import("//build/toolchain/clang.gni")
 import("//build/toolchain/cc_wrapper.gni")
 import("//build/toolchain/coverage.gni")
 import("//build/toolchain/toolchain.gni")
+import("//build/toolchain/posix/settings.gni")
 
 assert((target_os == "ios" && host_os == "mac") || host_os != "win")
 
@@ -147,6 +148,11 @@ template("apple_toolchain") {
 
     # Specify an explicit path for the strip binary.
     _strippath = invoker.bin_path + "strip"
+    # Use the strip GN arg (e.g. llvm-strip) when overridden for
+    # cross-compilation from a non-macOS host.
+    if (strip != "strip") {
+      _strippath = strip
+    }
     linker_driver += " -Wcrl,strippath," + _strippath
 
     if (mac_deterministic_build) {
